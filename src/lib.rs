@@ -50,25 +50,20 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn search<'a, 'b>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut results: Vec<&str> = Vec::new();
-    for line in content.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-    return results;
+    return content
+        .lines()
+        .filter(|line| line.contains(query))
+        .collect();
 }
 
 fn search_case_insensitive<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
-    let mut results: Vec<&str> = Vec::new();
-    for line in content.lines() {
-        if line.to_lowercase().contains(&query) {
-            results.push(line);
-        }
-    }
-    return results;
+    return content
+        .lines()
+        .filter(|line| line.contains(&query))
+        .collect();
 }
+
 #[cfg(test)]
 mod test {
     use super::*;
