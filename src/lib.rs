@@ -1,13 +1,24 @@
 use std::error::Error;
 use std::{env, fs};
 
+/// the configuration struct
+/// for the search process
 pub struct Config {
+    /// the query to search for
     pub query: String,
+    /// the file path to search its content
     pub file_path: String,
+    /// determines  the search process case sensitivity
     pub ignore_case: bool,
 }
 
 impl Config {
+    /// builds the search config object
+    /// # Example
+    /// ```
+    /// let args = vec![String::from("cwf"), String::from("query"), String::from("filetosearch")];
+    /// let config = minigrep::Config::build(args.into_iter()).unwrap();
+    /// ```
     pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
         //  the first value in the return value of env::args is the name of the program.
         // We want to ignore that and get to the next value,
@@ -33,6 +44,15 @@ impl Config {
     }
 }
 
+/// Runs the search process using the config argument provided
+///
+/// # Examples
+/// ```
+/// let args = vec![String::from("cwf"), String::from("query"), String::from("filetosearch")];
+/// let config = minigrep::Config::build(args.into_iter()).unwrap();
+///  minigrep::run(config);
+/// ```
+///
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let content = fs::read_to_string(config.file_path)?;
 
